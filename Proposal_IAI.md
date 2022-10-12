@@ -1,4 +1,4 @@
-#SkAI - Project Proposal
+# SkAI - Project Proposal
 
 ### Project Description
 
