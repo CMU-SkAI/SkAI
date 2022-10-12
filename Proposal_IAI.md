@@ -28,6 +28,6 @@ Actually, videos consist of a chain of still images. Based on this, we can extra
 ### Team Members
 
 - Ninglin Liu, ninglinl
-- Jiaxiang Wu,
-- Chuchu Wu,
+- Jiaxiang Wu, jiaxianw
+- Chuchu Wu, chuchuw
 - Panke Jing,
