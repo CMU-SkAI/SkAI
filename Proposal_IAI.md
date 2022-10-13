@@ -30,4 +30,4 @@ Actually, videos consist of a chain of still images. Based on this, we can extra
 - Ninglin Liu, ninglinl
 - Jiaxiang Wu, jiaxianw
 - Chuchu Wu, chuchuw
-- Panke Jing,
+- Panke Jing, pjing
