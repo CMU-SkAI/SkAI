@@ -1,5 +1,7 @@
 # SkAI - Project Proposal
 
+Detecting and evaluating skateboarding tricks by Artificial Intelligence.
+
 ### Project Description
 
 After skateboarding made its debut at Tokyo 2021 Olympic Games, the skateboarding industry is becoming a promising industry and it will attract more and more young people all over the world to play this sport. But at the current time, skateboarding is still an unpopular sport, in some cities, skaters can't find a near skateboarding park to practice tricks let alone evaluate tricks they did. For this, we're going to use AI to help skaters to evaluate how well the trick they did. To be specific, skaters can upload their skateboarding videos to the system, then the system will recognize tricks in their video and generate a score by artificial intelligence.
