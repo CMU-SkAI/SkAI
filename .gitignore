@@ -1,0 +1,7 @@
+# folders
+test_images
+train_images
+validate_images
+
+.dccache
+.DS_Store
