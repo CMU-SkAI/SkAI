@@ -1,7 +1,7 @@
 # folders
 test_images
 train_images
-validate_images
+val_images
 
 .dccache
 .DS_Store

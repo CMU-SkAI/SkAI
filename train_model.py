@@ -1,7 +1,17 @@
+import time
+import torch
+import copy
+
 def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_inception=False):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     since = time.time()
 
+    train_acc_history = []
     val_acc_history = []
+    train_loss_history = []
+    val_loss_history = []
+    
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
@@ -65,8 +75,14 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
+            
+            if phase == 'train':
+                train_acc_history.append(epoch_acc)
+                train_loss_history.append(epoch_loss)
             if phase == 'val':
                 val_acc_history.append(epoch_acc)
+                val_loss_history.append(epoch_loss)
+            
 
         print()
 
@@ -76,4 +92,4 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, is_ince
 
     # load best model weights
     model.load_state_dict(best_model_wts)
-    return model, val_acc_history
+    return model, train_loss_history, val_loss_history, train_acc_history, val_acc_history
