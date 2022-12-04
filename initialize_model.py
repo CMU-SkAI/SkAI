@@ -2,13 +2,14 @@ from config import NUM_CLASSES, ALEXNET_HIDDEN_UNITS, RESNET_USE_CUDA
 from torch import nn
 from torchvision import models
 from collections import OrderedDict
+from collections import namedtuple
 
 def set_parameter_requires_grad(model, feature_extracting):
     if feature_extracting:
         for param in model.parameters():
             param.requires_grad = False
             
-def initialize_model(model_name, feature_extract=True, use_pretrained=True):
+def initialize_model(model_name, device, feature_extract=True, use_pretrained=True):
     # Initialize these variables which will be set in this if statement. Each of these
     #   variables is model specific.
     model = None
@@ -18,11 +19,12 @@ def initialize_model(model_name, feature_extract=True, use_pretrained=True):
         """
         model = models.resnet50(pretrained=use_pretrained)
         set_parameter_requires_grad(model, feature_extract)
-        num_ftrs = model.fc.in_features
-        model.fc = nn.Linear(num_ftrs, NUM_CLASSES)
-        model.fc = model.fc.cuda() if RESNET_USE_CUDA else model.fc
-
-
+        model.fc = nn.Sequential(
+               nn.Linear(2048, 128),
+               nn.ReLU(inplace=True),
+               nn.Linear(128, NUM_CLASSES))
+        model.to(device)
+        
     elif model_name == "alexnet":
         """ Alexnet
         """
@@ -36,6 +38,7 @@ def initialize_model(model_name, feature_extract=True, use_pretrained=True):
             ('output', nn.LogSoftmax(dim=1))
         ]))
         model.classifier = classifier
+        model.to(device)
         
     else:
         print("Invalid model name, exiting...")

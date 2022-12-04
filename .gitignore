@@ -2,6 +2,8 @@
 test_images
 train_images
 val_images
+predict_images
+models
 
 .dccache
 .DS_Store

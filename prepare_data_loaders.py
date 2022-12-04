@@ -34,4 +34,4 @@ def prepare_data_loaders():
     image_datasets = {x: datasets.ImageFolder(os.path.join(x + '_images'), data_transforms[x]) for x in ['train', 'val', 'test']}
     dataloaders = {x: DataLoader(image_datasets[x], batch_size=BATCH_SIZE, shuffle=True, num_workers=DATA_LOADER_NUM_WORKERS) for x in ['train', 'val', 'test']}
 
-    return dataloaders
+    return dataloaders, image_datasets['train'].class_to_idx
