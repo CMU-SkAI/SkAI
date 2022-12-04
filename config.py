@@ -1,7 +1,7 @@
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config-colab.ini')
+config.read('config.ini')
 
 TRAIN_RATIO = config.getfloat('DEFAULT', 'TRAIN_RATIO', fallback=0.8)
 VALIDATE_RATIO = config.getfloat('DEFAULT', 'VALIDATE_RATIO', fallback=0.1)
