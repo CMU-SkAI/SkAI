@@ -7,15 +7,22 @@ from torchvision import transforms
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import math
+from prepare_images import resize_with_padding 
 
-def predict_deck_brands(model, device, class_to_idx):
+def predict_deck_brands(model_name, model, device, class_to_idx):
     predict_image_paths = [os.path.join(ROOT_PREDICT_FOLDER, f) for f in os.listdir(ROOT_PREDICT_FOLDER) if os.path.isfile(os.path.join(ROOT_PREDICT_FOLDER, f))]
     # remove all non image files
     for image_path in predict_image_paths:
         if not image_path.endswith('.jpg') and not image_path.endswith('.png') and not image_path.endswith('.jpeg') and not image_path.endswith('.gif'): 
             predict_image_paths.remove(image_path)
-                
-    img_list = [Image.open(img_path) for img_path in predict_image_paths]
+             
+    img_list = []
+    for img_path in predict_image_paths:
+        img = Image.open(img_path)
+        img = resize_with_padding(img, (256, 256))
+        if img.mode in ("RGBA", "P"): 
+            img = img.convert("RGB")
+        img_list.append(img)
 
     transform_arr = []
     for idx, img in enumerate(img_list):
@@ -44,11 +51,16 @@ def predict_deck_brands(model, device, class_to_idx):
     arr = np.array(pred_probs)
 
     fig, axs = plt.subplots(int(math.ceil( len(img_list) / 3 )), 3, figsize=(20, 5 * int(math.ceil( len(img_list) / 3 )) ))
+    correct_counter = 0
     for i, ax in enumerate(axs.flat):
         if i < len(img_list):
             ax.axis('off')
             ax.set_title("{:.2f}% [{}]\n{}".format( np.amax(arr[i, :], axis=0)*100 , list(class_to_idx.keys())[np.argmax(arr[i, :], axis=0)], os.path.basename(predict_image_paths[i]) ))
             ax.imshow(img_list[i])
+            # lowercase the filename and the brand name, then compare them
+            if list(class_to_idx.keys())[np.argmax(arr[i, :], axis=0)].lower() in os.path.basename(predict_image_paths[i]).lower():
+                correct_counter += 1
         else:
             # remove this ex from the diagram
             ax.axis('off')
+    fig.suptitle('[' + model_name + '] Correctly predicted: ' + str(correct_counter) + ' out of ' + str(len(img_list)) + ' images, Accuracy: ' + str(round(correct_counter / len(img_list) * 100, 2)) + '%')

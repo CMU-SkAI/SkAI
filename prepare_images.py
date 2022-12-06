@@ -2,7 +2,7 @@ import os
 import shutil
 import random
 from PIL import Image, ImageOps
-from config import ROOT_TRAIN_FOLDER, ROOT_TEST_FOLDER, ROOT_VALIDATE_FOLDER, ROOT_ORIGIN_FOLDER, TRAIN_RATIO, VALIDATE_RATIO
+from config import ROOT_TRAIN_FOLDER, ROOT_TEST_FOLDER, ROOT_VALIDATE_FOLDER, ROOT_ORIGIN_FOLDER, TRAIN_RATIO, VALIDATE_IN_NON_TRAIN_RATIO
 
 def process_images(brand_path, image, src_root_folder, dst_root_folder):
     image_src = os.path.join(src_root_folder, brand_path, image)
@@ -32,12 +32,13 @@ def prepare_images():
 
         random.shuffle(images)
         n_train = int(len(images) * TRAIN_RATIO) 
-        n_validate = int(len(images) * VALIDATE_RATIO) 
-        
         train_images = images[:n_train]
-        test_images = images[n_train:]
-        random.shuffle(train_images)
-        validate_images = train_images[:n_validate]
+        non_train_images = images[n_train:]
+        
+        random.shuffle(non_train_images)
+        n_validate = int(len(non_train_images) * VALIDATE_IN_NON_TRAIN_RATIO)
+        validate_images = non_train_images[:n_validate]
+        test_images = non_train_images[n_validate:]
         
         os.makedirs(os.path.join(ROOT_TRAIN_FOLDER, brand), exist_ok = True)
         os.makedirs(os.path.join(ROOT_TEST_FOLDER, brand), exist_ok = True)

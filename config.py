@@ -4,7 +4,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 TRAIN_RATIO = config.getfloat('DEFAULT', 'TRAIN_RATIO', fallback=0.8)
-VALIDATE_RATIO = config.getfloat('DEFAULT', 'VALIDATE_RATIO', fallback=0.1)
+VALIDATE_IN_NON_TRAIN_RATIO = config.getfloat('DEFAULT', 'VALIDATE_IN_NON_TRAIN_RATIO', fallback=0.5)
 ROOT_ORIGIN_FOLDER= config.get('DEFAULT', 'ROOT_ORIGIN_FOLDER', fallback='skateboarding_deck_images')
 ROOT_TRAIN_FOLDER = config.get('DEFAULT', 'ROOT_TRAIN_FOLDER', fallback='train_images')
 ROOT_TEST_FOLDER = config.get('DEFAULT', 'ROOT_TEST_FOLDER', fallback='test_images')
